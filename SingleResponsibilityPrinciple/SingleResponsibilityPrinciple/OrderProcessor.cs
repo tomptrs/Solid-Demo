@@ -52,7 +52,25 @@ namespace SingleResponsibilityPrinciple
                     order.Discount = 20;
                 else
                     order.Discount = 10;
+
             }
+
+            switch (order.OrderType)
+            {
+                case Type.electronics:
+                    logger.Log("prepare electronics order");
+                    break;
+                case Type.garden:
+                    logger.Log(("prepare garden order"));
+                    break;
+                case Type.living:
+                    logger.Log("prepare living order");
+                    break;
+                default:
+                    logger.Log("unknown type");
+                    break;
+            }
+
 
             logger.Log("Save to SQL DB");
             if ( sqlRepository.Save(order))
