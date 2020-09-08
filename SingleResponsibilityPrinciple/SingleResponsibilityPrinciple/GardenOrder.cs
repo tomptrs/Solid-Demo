@@ -4,15 +4,15 @@ using System.Text;
 
 namespace SingleResponsibilityPrinciple
 {
-    class LivingOrder:OrderHandler
+    public class GardenOrder : OrderHandler
     {
         private OrderProcessor orderProcessor;
         private Logger logger;
 
-        public LivingOrder(OrderProcessor orderProcessor, Logger logger)
+        public GardenOrder(OrderProcessor orderProcessor, Logger logger)
         {
             this.orderProcessor = orderProcessor;
-            this.logger = logger;   
+            this.logger = logger;
         }
 
         public override void Process(Order order)

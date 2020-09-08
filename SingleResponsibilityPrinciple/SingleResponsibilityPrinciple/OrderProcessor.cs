@@ -11,7 +11,7 @@ namespace SingleResponsibilityPrinciple
 {
     public class OrderProcessor
     {
-        private Logger logger;
+        public Logger logger;
         private FileOrderSource fileOrderSource;
         private JsonOrderSerializer jsonOrderSerializer;
         private MailSender mailSender;
@@ -31,34 +31,10 @@ namespace SingleResponsibilityPrinciple
             string orderJson = fileOrderSource.GetOrderFromFile();
             var order = jsonOrderSerializer.GetPolicyFromJsonString(orderJson);
 
-         
-            
+            var factory = new OrderFactory();
+            var handler = factory.Create(order, this);
+            handler.Process(order);
 
-            switch (order.OrderType)
-            {
-                case Type.electronics:
-                    logger.Log("prepare electronics order");
-                    if (String.IsNullOrEmpty((order.Customer.Name)))
-                    {
-                        logger.Log("Order must have o customer name");
-                    }
-
-                    if (order.Customer.Size > 100)
-                    {
-                        logger.Log("THis order has high priority, because of the size of the company");
-                        order.priority = Priorty.high;
-                    }
-                    break;
-                case Type.garden:
-                    logger.Log(("prepare garden order"));
-                    break;
-                case Type.living:
-                    logger.Log("prepare living order");
-                    break;
-                default:
-                    logger.Log("unknown type");
-                    break;
-            }
 
             int age = DateTime.Today.Year - order.Customer.DateOfBirth.Year;
             if (order.Customer.DateOfBirth.Month == DateTime.Today.Month &&

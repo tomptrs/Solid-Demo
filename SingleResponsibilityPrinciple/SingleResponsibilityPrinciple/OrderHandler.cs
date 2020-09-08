@@ -4,7 +4,9 @@ using System.Text;
 
 namespace SingleResponsibilityPrinciple
 {
-    class OrderHandler
+    public abstract class OrderHandler
     {
+        public abstract void Process(Order order);
+
     }
 }
