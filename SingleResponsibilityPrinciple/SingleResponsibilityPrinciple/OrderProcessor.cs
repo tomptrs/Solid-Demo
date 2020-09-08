@@ -31,34 +31,23 @@ namespace SingleResponsibilityPrinciple
             string orderJson = fileOrderSource.GetOrderFromFile();
             var order = jsonOrderSerializer.GetPolicyFromJsonString(orderJson);
 
-            if (String.IsNullOrEmpty((order.Customer.Name)))
-            {
-                logger.Log("Order must have o customer name");
-            }
-
-            if (order.Customer.Size > 100)
-            {
-                logger.Log("THis order has high priority, because of the size of the company");
-                order.priority = Priorty.high;
-            }
-
-            int age = DateTime.Today.Year - order.Customer.DateOfBirth.Year;
-            if (order.Customer.DateOfBirth.Month == DateTime.Today.Month &&
-                DateTime.Today.Day ==  order.Customer.DateOfBirth.Day)
-            {
-                logger.Log("customer birthday, so give a discount");
-                //calculate a discount
-                if (order.priority == Priorty.high)
-                    order.Discount = 20;
-                else
-                    order.Discount = 10;
-
-            }
+         
+            
 
             switch (order.OrderType)
             {
                 case Type.electronics:
                     logger.Log("prepare electronics order");
+                    if (String.IsNullOrEmpty((order.Customer.Name)))
+                    {
+                        logger.Log("Order must have o customer name");
+                    }
+
+                    if (order.Customer.Size > 100)
+                    {
+                        logger.Log("THis order has high priority, because of the size of the company");
+                        order.priority = Priorty.high;
+                    }
                     break;
                 case Type.garden:
                     logger.Log(("prepare garden order"));
@@ -69,6 +58,19 @@ namespace SingleResponsibilityPrinciple
                 default:
                     logger.Log("unknown type");
                     break;
+            }
+
+            int age = DateTime.Today.Year - order.Customer.DateOfBirth.Year;
+            if (order.Customer.DateOfBirth.Month == DateTime.Today.Month &&
+                DateTime.Today.Day == order.Customer.DateOfBirth.Day)
+            {
+                logger.Log("customer birthday, so give a discount");
+                //calculate a discount
+                if (order.priority == Priorty.high)
+                    order.Discount = 20;
+                else
+                    order.Discount = 10;
+
             }
 
 
