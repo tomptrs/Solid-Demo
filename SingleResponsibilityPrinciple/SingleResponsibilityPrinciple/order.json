@@ -1,0 +1,14 @@
+{
+  "Customer": {
+    "name": "X",
+    "email": "x@x.be",
+    "Address": {
+      "street": "theStreet",
+      "nr": 1,
+      "Code": 2000,
+      "City": "Antwerp",
+      "dateOfBirth": "1980-08-08"
+    }
+  }
+
+}
