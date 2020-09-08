@@ -11,23 +11,34 @@ namespace SingleResponsibilityPrinciple
 {
     public class OrderProcessor
     {
+        private Logger logger;
+        private FileOrderSource fileOrderSource;
+        private JsonOrderSerializer jsonOrderSerializer;
+        private MailSender mailSender;
+        private SQLRepository sqlRepository;
+
+        public OrderProcessor()
+        {
+                logger = new Logger();
+                fileOrderSource = new FileOrderSource();
+                jsonOrderSerializer = new JsonOrderSerializer();
+                sqlRepository = new SQLRepository();
+        }
         public void Process()
         {
-            Console.WriteLine("Processing Order...");
+           logger.Log("Processing Order...");
             // load policy - open file policy.json
-            string orderJson = File.ReadAllText("policy.json");
-
-            var order = JsonConvert.DeserializeObject<Order>(orderJson,
-                new StringEnumConverter());
+            string orderJson = fileOrderSource.GetOrderFromFile();
+            var order = jsonOrderSerializer.GetPolicyFromJsonString(orderJson);
 
             if (String.IsNullOrEmpty((order.Customer.Name)))
             {
-                Console.WriteLine("Order must have o customer name");
+                logger.Log("Order must have o customer name");
             }
 
             if (order.Customer.Size > 100)
             {
-                Console.WriteLine("THis order has high priority, because of the size of the company");
+                logger.Log("THis order has high priority, because of the size of the company");
                 order.priority = Priorty.high;
             }
 
@@ -35,7 +46,7 @@ namespace SingleResponsibilityPrinciple
             if (order.Customer.DateOfBirth.Month == DateTime.Today.Month &&
                 DateTime.Today.Day ==  order.Customer.DateOfBirth.Day)
             {
-                Console.WriteLine("customer birthday, so give a discount");
+                logger.Log("customer birthday, so give a discount");
                 //calculate a discount
                 if (order.priority == Priorty.high)
                     order.Discount = 20;
@@ -43,30 +54,17 @@ namespace SingleResponsibilityPrinciple
                     order.Discount = 10;
             }
 
-            if ( Save(order))
+            logger.Log("Save to SQL DB");
+            if ( sqlRepository.Save(order))
             {
-                SendComfirmationMessage(order);
+               mailSender.SendComfirmationMessage(order);
             }
 
         }
 
-        private void SendComfirmationMessage(Order order)
-        {
-            Console.WriteLine(("Sending comfirmation email"));
-           //Send an email to the client
-           var name = order.Customer.Name;
-           var email = order.Customer.Email;
-        }
 
-        public bool Save(Order order)
-        {
-            Console.WriteLine("saving order in SQL Database");
-            using (SqlConnection con = new SqlConnection("connectionDetails"))
-            {
-                //save order to SQL DB
-            }
-            return true;
-        }
+
+      
 
 
     }
