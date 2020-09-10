@@ -18,21 +18,45 @@ namespace SingleResponsibilityPrinciple
         Garden,
         Living
     }
+
+    public class Item
+    {
+        public bool IsInStock { get; set; }
+    }
+
     public class Order
     {
         public Customer Customer;
         public Priorty priority = Priorty.low;
         public float Discount { get; set; }
         public OrderType OrderType { get; set; }
-
+        public List<Item> items = new List<Item>();
      
         
       
-        public bool IsValid()
+        public virtual bool IsValid()
         {
+            var isValid = true;
+            items.ForEach(item =>
+            {
+                if (!item.IsInStock)
+                    isValid = false;
+            });
+
             return true;
         }
 
-      
+    }
+
+    public class PriorityOrder:Order{
+        public override bool IsValid()
+        {
+            items.ForEach(item =>
+            {
+                if(!item.IsInStock)
+                    throw new Exception("no items in stock");
+            });
+            return true;
+        }
     }
 }

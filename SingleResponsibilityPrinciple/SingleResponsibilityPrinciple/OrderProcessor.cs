@@ -34,6 +34,14 @@ namespace SingleResponsibilityPrinciple
             var factory = new OrderFactory();
             var handler = factory.Create(order, this);
             handler.Process(order);
+          /*  if (handler != null)
+            {
+                handler.Process(order);
+            }
+            else
+            {
+                logger.Log("unknown type");
+            }*/
 
 
             int age = DateTime.Today.Year - order.Customer.DateOfBirth.Year;

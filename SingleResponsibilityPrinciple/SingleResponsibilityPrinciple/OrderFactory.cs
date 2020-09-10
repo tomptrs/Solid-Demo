@@ -17,7 +17,7 @@ namespace SingleResponsibilityPrinciple
             }
             catch
             {
-                return null;
+                return new UnknownOrder(processor, processor.logger); //null;
             }
 
             /*  switch (order.OrderType)
