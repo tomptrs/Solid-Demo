@@ -6,21 +6,22 @@ using System.IO;
 using System.Text;
 using System.Threading.Channels;
 using System.Xml.Linq;
+using SingleResponsibilityPrinciple.interfaces;
 
 namespace SingleResponsibilityPrinciple
 {
     public class OrderProcessor
     {
-        public Logger logger;
-        private FileOrderSource fileOrderSource;
+        public ILogger logger;
+        private IOrderSource orderSource;
         private JsonOrderSerializer jsonOrderSerializer;
         private MailSender mailSender;
         private SQLRepository sqlRepository;
 
-        public OrderProcessor()
+        public OrderProcessor(IOrderSource orderSource)
         {
                 logger = new Logger();
-                fileOrderSource = new FileOrderSource();
+                this.orderSource = orderSource;
                 jsonOrderSerializer = new JsonOrderSerializer();
                 sqlRepository = new SQLRepository();
         }
@@ -28,7 +29,7 @@ namespace SingleResponsibilityPrinciple
         {
            logger.Log("Processing Order...");
             // load policy - open file policy.json
-            string orderJson = fileOrderSource.GetOrderFromFile();
+            string orderJson = orderSource.GetOrderFromSource();
             var order = jsonOrderSerializer.GetPolicyFromJsonString(orderJson);
 
             var factory = new OrderFactory();

@@ -31,7 +31,8 @@ namespace SingleResponsibilityPrinciple
         public float Discount { get; set; }
         public OrderType OrderType { get; set; }
         public List<Item> items = new List<Item>();
-     
+
+       
         
       
         public virtual bool IsValid()

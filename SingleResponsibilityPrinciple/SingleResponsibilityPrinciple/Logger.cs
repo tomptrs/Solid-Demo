@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SingleResponsibilityPrinciple.interfaces;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace SingleResponsibilityPrinciple
 {
-    public class Logger
+    public class Logger:ILogger
     {
         public void Log(string message)
         {

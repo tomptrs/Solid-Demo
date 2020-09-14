@@ -5,11 +5,19 @@ using System.Text;
 
 namespace SingleResponsibilityPrinciple
 {
-    public class FileOrderSource
+
+    public interface IOrderSource
     {
-        public string GetOrderFromFile()
+        string GetOrderFromSource();
+    }
+    public class FileOrderSource:IOrderSource
+    {
+       
+
+        public string GetOrderFromSource()
         {
             return File.ReadAllText("order.json");
+        
         }
     }
 }

@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SingleResponsibilityPrinciple.interfaces;
 
 namespace SingleResponsibilityPrinciple
 {
     public class ElectronicsOrder:OrderHandler
     {
         private OrderProcessor orderProcessor;
-        private Logger logger;
 
-        public ElectronicsOrder(OrderProcessor orderProcessor, Logger logger)
+
+        public ElectronicsOrder(OrderProcessor orderProcessor, ILogger logger):base(logger)
         {
             this.orderProcessor = orderProcessor;
-            this.logger = logger;   
         }
 
         public override void Process(Order order)

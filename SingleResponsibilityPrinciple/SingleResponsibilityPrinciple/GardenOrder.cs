@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SingleResponsibilityPrinciple.interfaces;
 
 namespace SingleResponsibilityPrinciple
 {
     public class GardenOrder : OrderHandler
     {
         private OrderProcessor orderProcessor;
-        private Logger logger;
+       
 
-        public GardenOrder(OrderProcessor orderProcessor, Logger logger)
+        public GardenOrder(OrderProcessor orderProcessor,ILogger logger):base(logger)
         {
             this.orderProcessor = orderProcessor;
-            this.logger = logger;
+          
         }
 
         public override void Process(Order order)
