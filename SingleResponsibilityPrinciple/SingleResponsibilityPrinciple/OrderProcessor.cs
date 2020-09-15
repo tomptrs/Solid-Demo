@@ -36,7 +36,7 @@ namespace SingleResponsibilityPrinciple
 
             switch (order.OrderType)
             {
-                case Type.electronics:
+                case OrderType.Electronics:
                     logger.Log("prepare electronics order");
                     if (String.IsNullOrEmpty((order.Customer.Name)))
                     {
@@ -49,10 +49,10 @@ namespace SingleResponsibilityPrinciple
                         order.priority = Priorty.high;
                     }
                     break;
-                case Type.garden:
+                case OrderType.Garden:
                     logger.Log(("prepare garden order"));
                     break;
-                case Type.living:
+                case OrderType.Living:
                     logger.Log("prepare living order");
                     break;
                 default:
